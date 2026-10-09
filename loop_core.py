@@ -48,7 +48,7 @@ def run_agent(model, question: str, max_steps: int = 5,
             response = model.invoke(messages)
         except Exception as exc:
             trace.append({"step": step, "event": "model_error",
-                          "error_type": type(exc).__name__})
+                          "error_type": type(exc).__name__, "http_status": getattr(exc, "code", None)})
             return finish("model_error", "Lỗi gọi mô hình; kiểm tra cấu hình.")
         trace.append({"step": step, "event": "model",
                       "seconds": round(perf_counter() - started, 3)})

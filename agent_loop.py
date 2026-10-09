@@ -5,20 +5,20 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from loop_core import run_agent
 from tools import TOOLS
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Bounded tool-calling loop")
     parser.add_argument("question")
     parser.add_argument("--max-steps", type=int, default=5)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     load_dotenv(Path(__file__).with_name(".env"), override=False)
     key = os.getenv("GOOGLE_API_KEY", "").strip()
     if not key:
         parser.error("Missing GOOGLE_API_KEY in environment or .env")
     try:
         llm = ChatGoogleGenerativeAI(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite"),
-            api_key=key, vertexai=False, temperature=1.0,
-            timeout=30, max_retries=0)
+            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            api_key=key, vertexai=False, temperature=0.0,
+            timeout=60, max_retries=0)
         result = run_agent(llm.bind_tools(TOOLS), args.question, args.max_steps)
     except Exception as exc:
         print(f"Không khởi chạy được Agent ({type(exc).__name__}).")

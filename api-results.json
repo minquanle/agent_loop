@@ -1,0 +1,49 @@
+{
+  "timestamp_utc": "2026-10-09T07:13:18.169505+00:00",
+  "provider": "Gemini Developer API",
+  "model": "gemini-2.5-flash",
+  "records": [
+    {
+      "scenario": "A",
+      "question": "Trả lời đúng một câu: Xin chào! Không dùng công cụ.",
+      "max_steps": 5,
+      "exit_code": 0,
+      "output": "status=final; steps=1; tool_calls=0\nXin chào!\n"
+    },
+    {
+      "scenario": "B",
+      "question": "Dùng calculator tính 123 nhân 456. Trả lời ngắn gọn kết quả.",
+      "max_steps": 5,
+      "exit_code": 0,
+      "output": "[step 1] calculator: {'ok': True, 'data': {'value': 56088.0}}\nstatus=final; steps=2; tool_calls=1\nKết quả là 56088.\n"
+    },
+    {
+      "scenario": "C",
+      "question": "Dùng calculator tính 123 nhân 456 và count_words đếm 'Hoc AI rat vui'. Gọi cả hai tool rồi trả lời ngắn gọn.",
+      "max_steps": 5,
+      "exit_code": 0,
+      "output": "[step 1] calculator: {'ok': True, 'data': {'value': 56088.0}}\n[step 1] count_words: {'ok': True, 'data': {'count': 4}}\nstatus=final; steps=2; tool_calls=2\nPhép nhân 123 * 456 cho kết quả 56088. Cụm từ 'Hoc AI rat vui' có 4 từ.\n"
+    },
+    {
+      "scenario": "D",
+      "question": "Dùng count_words đếm 'Hoc AI rat vui'. Sau khi nhận kết quả, dùng calculator nhân số đếm với 25000. Trả lời ngắn gọn.",
+      "max_steps": 5,
+      "exit_code": 0,
+      "output": "[step 1] count_words: {'ok': True, 'data': {'count': 4}}\n[step 2] calculator: {'ok': True, 'data': {'value': 100000.0}}\nstatus=final; steps=3; tool_calls=2\nKết quả là 100000.\n"
+    },
+    {
+      "scenario": "E",
+      "question": "Hãy gọi count_words để đếm 'Hoc AI rat vui', không tự tính. Sau kết quả tool mới trả lời.",
+      "max_steps": 1,
+      "exit_code": 1,
+      "output": "[step 1] count_words: {'ok': True, 'data': {'count': 4}}\nstatus=max_steps; steps=1; tool_calls=1\nĐã chạm giới hạn bước; chưa có câu trả lời cuối.\n"
+    },
+    {
+      "scenario": "F",
+      "question": "Hãy thực sự gọi calculator với a=1, b=0, operation=divide để kiểm tra nhánh lỗi tool, sau đó giải thích ngắn gọn. Không đổi mẫu số.",
+      "max_steps": 5,
+      "exit_code": 0,
+      "output": "[step 1] calculator: {'ok': False, 'error': 'invalid_arguments'}\nstatus=final; steps=2; tool_calls=1\nPhép chia cho 0 không hợp lệ. Vui lòng cung cấp một số khác 0 cho b.\n"
+    }
+  ]
+}
